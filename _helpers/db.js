@@ -27,7 +27,10 @@ const initialize = async () => {
     db.VillageHern = require('../game.models/hern-village.model')(sequelize);
     db.VillageIbis = require('../game.models/ibis-village.model')(sequelize);
     db.VillageWild = require('../game.models/wild-village.model')(sequelize);
-
+    db.CastleHern = require('../game.models/hern-castle.model')(sequelize);
+    db.CastleIbis = require('../game.models/ibis-castle.model')(sequelize);
+    db.CastleWild = require('../game.models/wild-castle.model')(sequelize);
+    db.MapTile = require('../game.models/map-tile.model')(sequelize);
     // sync all models with database
     await sequelize.sync();
 }; 

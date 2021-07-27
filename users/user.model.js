@@ -11,7 +11,6 @@ function model(sequelize) {
         race: { type: DataTypes.ENUM('0','1','2'), allowNull: true},
         kind: { type: DataTypes.ENUM('0','1','2'), allowNull: true},
         character: { type: DataTypes.ENUM('0','1','2'), allowNull: true},
-        cameFrom: { type: DataTypes.ENUM('0','1','2'), allowNull: true},
         bestWeapon: { type: DataTypes.ENUM('0','1','2'), allowNull: true},
         bio: { type: DataTypes.STRING, allowNull: true},
         ownVillagesArray: { type: DataTypes.JSON, allowNull: true},

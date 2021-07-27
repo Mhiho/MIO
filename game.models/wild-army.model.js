@@ -11,6 +11,7 @@ function model(sequelize) {
         weapon: {type: DataTypes.STRING, allowNull: false},
         armor: {type: DataTypes.STRING, allowNull: false},
         maintenance: {type: DataTypes.INTEGER, allowNull: false},
+        ressourceCarry: {type: DataTypes.INTEGER, allowNull: false},
     };
 
     return sequelize.define('ArmyWild', attributes);

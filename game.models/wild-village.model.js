@@ -4,7 +4,7 @@ module.exports = model;
 
 function model(sequelize) {
     const attributes = {
-        villagWildID: {type: DataTypes.INTEGER, primaryKey: true, allowNull: false, autoIncrement: true},
+        villageWildID: {type: DataTypes.INTEGER, primaryKey: true, allowNull: false, autoIncrement: true},
         name: {type: DataTypes.STRING, allowNull: true},
         foodRateBonus: {type: DataTypes.DECIMAL, allowNull: true},
         ironRateBonus: {type: DataTypes.DECIMAL, allowNull: true},
@@ -14,7 +14,7 @@ function model(sequelize) {
         headless: {type: DataTypes.INTEGER, allowNull: true},
         blackGuard: {type: DataTypes.INTEGER, allowNull: true},
         shaman: {type: DataTypes.INTEGER, allowNull: true},
-        wildsoldier: {type: DataTypes.INTEGER, allowNull: true},
+        wildSoldier: {type: DataTypes.INTEGER, allowNull: true},
         ramWild: {type: DataTypes.INTEGER, allowNull: true},
         gigantWild: {type: DataTypes.INTEGER, allowNull: true},
         blindGuild: {type: DataTypes.INTEGER, allowNull: true},
