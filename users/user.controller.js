@@ -26,7 +26,7 @@ function authenticateSchema(req, res, next) {
 
 function authenticate(req, res, next) {
     userService.authenticate(req.body)
-        .then(user => res.json(user))
+        .then(data => res.send(data))
         .catch(next);
 }
 

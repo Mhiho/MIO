@@ -11,15 +11,20 @@ function authorize() {
 
         // attach full user record to request object
         async (req, res, next) => {
-            // get user with id from token 'sub' (subject) property
-            const user = await db.User.findByPk(req.user.sub);
-
-            // check user still exists
-            if (!user)
-                return res.status(401).json({ message: 'Unauthorized' });
-
-            // authorization successful
-            req.user = user.get();
+            try{
+                const token = req.header('Authorization').replace('Bearer ','')
+                const decoded = jwt.verify(token, secret)
+                const user = await db.User.findOne({_id: decoded._id, 'tokens.token': token})
+          
+                if(!user || user.validated == false){
+                   throw new Error()
+                }
+                req.user = user;
+                res.send(req.user);
+                next();
+             } catch(e){
+                res.status(401).send({error: 'Please authenticate.'})
+             } 
             next();
         }
     ];

@@ -20,13 +20,11 @@ async function authenticate({ email, password }) {
 
     // authentication successful
     const token = jwt.sign({ sub: user.userID + Date.now() }, secret, { expiresIn: '30d' });
-    console.log(Date.now())
     const tokens = user.tokens;
-    tokens.push(token);
+    tokens.push({token});
     await db.User.update({tokens},{where: {userID: user.userID}}).then((updatedUser)=>{ updatedUser.tokens });
-    const ret = { ...omitHash(user.get()) };
-    console.log(ret)
-    return ret;
+    const response = { ...omitHash(user.get()) };
+    return {response, token};
 }
 
 async function getAll() {
@@ -45,7 +43,6 @@ async function create(params) {
     if (await db.User.findOne({ where: { email: params.email }})) {
         throw 'Email "' + params.email + '" is already taken';
     }
-
     // hash password
     if (params.password) {
         params.passwordHash = await bcrypt.hash(params.password, 10);
@@ -91,6 +88,6 @@ async function getUser(id) {
 }
 
 function omitHash(user) {
-    const { passwordHash, userID, ...userWithoutHash } = user;
+    const { passwordHash, userID, tokens, email, ...userWithoutHash } = user;
     return userWithoutHash;
 }

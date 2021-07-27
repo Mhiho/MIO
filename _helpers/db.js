@@ -21,6 +21,12 @@ const initialize = async () => {
 
     // init models and add them to the exported db object
     db.User = require('../users/user.model')(sequelize);
+    db.ArmyHern = require('../game.models/hern-army.model')(sequelize);
+    db.ArmyIbis = require('../game.models/ibis-army.model')(sequelize);
+    db.ArmyWild = require('../game.models/wild-army.model')(sequelize);
+    db.VillageHern = require('../game.models/hern-village.model')(sequelize);
+    db.VillageIbis = require('../game.models/ibis-village.model')(sequelize);
+    db.VillageWild = require('../game.models/wild-village.model')(sequelize);
 
     // sync all models with database
     await sequelize.sync();
