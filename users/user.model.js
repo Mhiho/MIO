@@ -26,8 +26,12 @@ function model(sequelize) {
         positionY: { type: DataTypes.INTEGER, allowNull: true},
         whisperingTitle: { type: DataTypes.STRING, allowNull: true },
         tokens: { type: DataTypes.JSON, allowNull: true, defaultValue: [] },
+        gameCapitalPositionX: { type: DataTypes.INTEGER, allowNull: true, defaultValue: 100 },
+        gameCapitalPositionY: { type: DataTypes.INTEGER, allowNull: true, defaultValue: 100 },
+        gameDragonCrystals: { type: DataTypes.INTEGER, allowNull: true },
+        awatarUrl: { type: DataTypes.STRING, allowNull: true },
     };
-
+//gameCapitalPosition default sa tymczasowe
     const options = {
         defaultScope: {
             // exclude hash by default

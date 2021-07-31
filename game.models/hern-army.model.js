@@ -7,11 +7,13 @@ function model(sequelize) {
         armyHernID: {type: DataTypes.INTEGER, primaryKey: true, allowNull: false, autoIncrement: true},
         armyHernName: {type: DataTypes.STRING, allowNull: false},
         attack: {type: DataTypes.INTEGER, allowNull: false},
-        defense: {type: DataTypes.STRING, allowNull: false},
-        weapon: {type: DataTypes.STRING, allowNull: false},
-        armor: {type: DataTypes.STRING, allowNull: false},
+        defense: {type: DataTypes.INTEGER, allowNull: false},
+        weapon: {type: DataTypes.DECIMAL, allowNull: false},
+        armor: {type: DataTypes.DECIMAL, allowNull: false},
         maintenance: {type: DataTypes.INTEGER, allowNull: false},
-        ressourceCarry: {type: DataTypes.INTEGER, allowNull: false},
+        carry: {type: DataTypes.INTEGER, allowNull: false},
+        hitpoints: {type: DataTypes.INTEGER, allowNull: false},
+        exp: {type: DataTypes.INTEGER, allowNull: false}
     };
 
     return sequelize.define('ArmyHern', attributes);

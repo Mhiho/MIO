@@ -10,6 +10,13 @@ function model(sequelize) {
         stoneRateBonus: {type: DataTypes.DECIMAL, allowNull: true},
         silverRateBonus: {type: DataTypes.DECIMAL, allowNull: true},
         magicRateBonus: {type: DataTypes.DECIMAL, allowNull: true},
+        woodRateBonus: {type: DataTypes.DECIMAL, allowNull: true},
+        foodStart: {type: DataTypes.INTEGER, allowNull: true},
+        ironStart: {type: DataTypes.INTEGER, allowNull: true},
+        stoneStart: {type: DataTypes.INTEGER, allowNull: true},
+        woodStart: {type: DataTypes.INTEGER, allowNull: true},
+        magicStart: {type: DataTypes.INTEGER, allowNull: true},
+        silverStart: {type: DataTypes.INTEGER, allowNull: true},
         militia: {type: DataTypes.INTEGER, allowNull: true},
         hern: {type: DataTypes.INTEGER, allowNull: true},
         gryfHern: {type: DataTypes.INTEGER, allowNull: true},
@@ -38,6 +45,7 @@ function model(sequelize) {
         headquaters: {type: DataTypes.INTEGER, allowNull: true},
         oldHern: {type: DataTypes.INTEGER, allowNull: true},
         scoutHern: {type: DataTypes.INTEGER, allowNull: true},
+        settlers: {type: DataTypes.INTEGER, allowNull: true},
     };
 
 
