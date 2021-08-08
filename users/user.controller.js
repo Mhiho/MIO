@@ -52,6 +52,8 @@ function getAll(req, res, next) {
 }
 
 function getCurrent(req, res, next) {
+    console.log('nizej')
+    console.log(req)
     res.json(req.user);
 }
 

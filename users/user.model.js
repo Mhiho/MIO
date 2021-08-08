@@ -22,16 +22,15 @@ function model(sequelize) {
         unofficialFriends: { type: DataTypes.JSON, allowNull: true},
         chatsWith: { type: DataTypes.JSON, allowNull: true},
         rank: { type: DataTypes.INTEGER, allowNull: true},
-        positionX: { type: DataTypes.INTEGER, allowNull: true},
-        positionY: { type: DataTypes.INTEGER, allowNull: true},
+        otherPositions: { type: DataTypes.JSON, allowNull: true},
         whisperingTitle: { type: DataTypes.STRING, allowNull: true },
         tokens: { type: DataTypes.JSON, allowNull: true, defaultValue: [] },
-        gameCapitalPositionX: { type: DataTypes.INTEGER, allowNull: true, defaultValue: 100 },
-        gameCapitalPositionY: { type: DataTypes.INTEGER, allowNull: true, defaultValue: 100 },
+        capitalPositionX: { type: DataTypes.INTEGER, allowNull: true, defaultValue: 10 },
+        capitalPositionY: { type: DataTypes.INTEGER, allowNull: true, defaultValue: 10 },
         gameDragonCrystals: { type: DataTypes.INTEGER, allowNull: true },
         awatarUrl: { type: DataTypes.STRING, allowNull: true },
     };
-//gameCapitalPosition default sa tymczasowe
+//capitalPosition default sa tymczasowe
     const options = {
         defaultScope: {
             // exclude hash by default
