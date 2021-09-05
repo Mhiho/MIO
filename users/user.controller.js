@@ -34,7 +34,8 @@ function registerSchema(req, res, next) {
     const schema = Joi.object({
         email: Joi.string(),
         name: Joi.string().required(),
-        password: Joi.string().min(8).required()
+        password: Joi.string().min(8).required(),
+        race: Joi.string().valid('0','1','2').required(),
     });
     validateRequest(req, next, schema);
 }
@@ -54,6 +55,7 @@ function getAll(req, res, next) {
 function getCurrent(req, res, next) {
     console.log('nizej')
     console.log(req)
+    console.log(req.user.details)
     res.json(req.user);
 }
 
