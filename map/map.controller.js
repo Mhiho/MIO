@@ -4,9 +4,14 @@ const authorize = require('../_middleware/auth');
 const mapService = require('./map.service');
 
 
-router.get('/', authorize(), centerMapTile);
+router.get('/ownCenterMap', authorize(), centerMapTile);
+router.get('/wholemap', authorize(), wholeMap);
 
 module.exports = router;
 function centerMapTile(req, res, next) {
-    mapService.ownMap(req.query.name).then(data => res.json(data)).catch(next);
+    mapService.ownCenterMap(req.query.name).then(data => res.json(data)).catch(next);
+}
+
+function wholeMap(req, res, next) {
+    mapService.wholeMap(req.query.name).then(data => res.json(data)).catch(next);
 }
