@@ -8,12 +8,14 @@ function authorize() {
     return async (req, res, next) => {
         // authenticate JWT token and attach decoded token to request as req.user
         try {
-            const authHeader = req.headers.authorization;
-            console.log(!!authHeader)
+            const authHeader = await req.headers.authorization;
             if (!!authHeader === true) {
                 const token = authHeader.split(' ')[1];
+                console.log(token)
                 const decoded = jwt.verify(token, secret)
+                console.log(decoded)
                 const user = await db.User.findOne({ _id: decoded._id, 'tokens.token': token }).catch(e=>console.log(e));
+                console.log(user)
                 if (!user ) {
                     throw new Error()
                 }

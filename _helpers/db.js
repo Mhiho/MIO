@@ -1,6 +1,9 @@
 const config = require('../config').config;
 const mysql = require('mysql2/promise');
 const { Sequelize } = require('sequelize');
+const lorisArmy = require('../initialData/lorisArmy');
+const ibisArmy = require('../initialData/ibisArmy');
+const wildArmy = require('../initialData/wildArmy');
 
 module.exports = db = {};
 
@@ -33,6 +36,10 @@ const initialize = async () => {
     db.MapTile = require('../game.models/map-tile.model')(sequelize);
     // sync all models with database
     await sequelize.sync();
+    await connection.query(lorisArmy);
+    await connection.query(ibisArmy);
+    await connection.query(wildArmy);
 }; 
+
 
 initialize().catch(console.error);

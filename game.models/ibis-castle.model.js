@@ -39,8 +39,9 @@ function model(sequelize) {
         crop: {type: DataTypes.JSON, allowNull: true},
         administrationBuilding: {type: DataTypes.INTEGER, allowNull: true},
         headquaters: {type: DataTypes.INTEGER, allowNull: true},
-        oldHern: {type: DataTypes.INTEGER, allowNull: true},
-        scoutHern: {type: DataTypes.INTEGER, allowNull: true},
+        bigEagle: {type: DataTypes.INTEGER, allowNull: true},
+        nest: {type: DataTypes.INTEGER, allowNull: true},
+        settlers: {type: DataTypes.INTEGER, allowNull: true},
         general: {type: DataTypes.JSON, allowNull: true},
     };
     return sequelize.define('CastleIbis', attributes);

@@ -18,14 +18,16 @@ function model(sequelize) {
         magicStart: {type: DataTypes.INTEGER, allowNull: true},
         silverStart: {type: DataTypes.INTEGER, allowNull: true},
         militia: {type: DataTypes.INTEGER, allowNull: true},
+        scoutHern: {type: DataTypes.INTEGER, allowNull: true},
         hern: {type: DataTypes.INTEGER, allowNull: true},
         gryfHern: {type: DataTypes.INTEGER, allowNull: true},
         magicHern: {type: DataTypes.INTEGER, allowNull: true},
         horseHern: {type: DataTypes.INTEGER, allowNull: true},
+        oldHern: {type: DataTypes.INTEGER, allowNull: true},
         ramHern: {type: DataTypes.INTEGER, allowNull: true},
         balistaHern: {type: DataTypes.INTEGER, allowNull: true},
-        barracks: {type: DataTypes.INTEGER, allowNull: true},
         slave: {type: DataTypes.INTEGER, allowNull: true},
+        barracks: {type: DataTypes.INTEGER, allowNull: true},
         clifs: {type: DataTypes.INTEGER, allowNull: true},
         magicFire: {type: DataTypes.INTEGER, allowNull: true},
         stables: {type: DataTypes.INTEGER, allowNull: true},
@@ -43,9 +45,9 @@ function model(sequelize) {
         warehouse: {type: DataTypes.JSON, allowNull: true},
         administrationBuilding: {type: DataTypes.INTEGER, allowNull: true},
         headquaters: {type: DataTypes.INTEGER, allowNull: true},
-        oldHern: {type: DataTypes.INTEGER, allowNull: true},
-        scoutHern: {type: DataTypes.INTEGER, allowNull: true},
         settlers: {type: DataTypes.INTEGER, allowNull: true},
+        altar: {type: DataTypes.INTEGER, allowNull: true},
+        walkiria: {type: DataTypes.INTEGER, allowNull: true}
     };
 
 
