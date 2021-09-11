@@ -4,7 +4,17 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const port = process.env.PORT || 4000;
 const errorHandler = require('./_middleware/error-handler');
-const cors = require("cors")
+const cors = require('cors')
+
+let allowCrossDomain = function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', "*");
+  res.header('Access-Control-Allow-Headers', "*");
+  res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,PATCH,OPTIONS');
+  next();
+}
+app.use(allowCrossDomain);
+
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/pages/index.html');
@@ -21,7 +31,7 @@ io.on('connection', (socket) => {
     });
   })
 });
-app.use(cors())
+
 app.use(express.urlencoded({extended: true})); 
 app.use(express.json());
 
