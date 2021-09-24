@@ -2,6 +2,7 @@ const secret = require('../config').secret;
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const db = require('../_helpers/db');
+const { sendVerificationMail, sendResetPwd } = require('../emails/account');
 
 module.exports = {
     authenticate,
@@ -9,7 +10,8 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    verify,
 };
 
 async function authenticate({ email, password }) {
@@ -18,12 +20,19 @@ async function authenticate({ email, password }) {
         throw 'Email or password is incorrect';
     }
     // authentication successful
-    const token = jwt.sign({ sub: user.userID + Date.now() }, secret, { expiresIn: '30d' });
+    const token = jwt.sign({ sub: user.userID }, secret, { expiresIn: '30d' });
+    console.log(token)
     const tokens = user.tokens;
     tokens.push({token});
     await db.User.update({tokens},{where: {userID: user.userID}}).then((updatedUser)=>{ updatedUser.tokens });
     const response = { ...omitHash(user.get()) };
     return {response, token};
+}
+
+async function verify(token) {
+    const decoded = jwt.verify(token, secret)
+        //update usera, jeśli nie to za 24h usunac go
+    await db.User.update({validated: true}, { where: { userID: decoded.id }}).catch(e=> console.log(e));
 }
 
 async function getAll() {
@@ -34,21 +43,22 @@ async function getById(id) {
     return await getUser(id);
 }
 
-async function create(params) {
+async function create(body) {
     // validate
-    if (await db.User.findOne({ where: { name: params.name } })) {
-        throw 'Username "' + params.name + '" is already taken';
+    if (await db.User.findOne({ where: { name: body.name }})) {
+        throw 'Username "' + body.name + '" is already taken';
     }
-    if (await db.User.findOne({ where: { email: params.email }})) {
-        throw 'Email "' + params.email + '" is already taken';
+    if (await db.User.findOne({ where: { email: body.email }})) {
+        throw 'Email "' + body.email + '" is already taken';
     }
     // hash password
-    if (params.password) {
-        params.passwordHash = await bcrypt.hash(params.password, 10);
+    if (body.password) {
+        body.passwordHash = await bcrypt.hash(body.password, 10);
     
     }
     // save user
-    await db.User.create(params);
+    await db.User.create(body).catch(e=> console.log(e));
+    await sendVerificationMail(body.email, body.name).catch(e=> console.log(e));
 }
 
 async function update(id, params) {

@@ -11,11 +11,9 @@ function authorize() {
             const authHeader = await req.headers.authorization;
             if (!!authHeader === true) {
                 const token = authHeader.split(' ')[1];
-                console.log(token)
                 const decoded = jwt.verify(token, secret)
                 console.log(decoded)
-                const user = await db.User.findOne({ _id: decoded._id, 'tokens.token': token }).catch(e=>console.log(e));
-                console.log(user)
+                const user = await db.User.findOne({ userID: decoded.userID, 'tokens.token': token }).catch(e=>console.log(e));
                 if (!user ) {
                     throw new Error()
                 }

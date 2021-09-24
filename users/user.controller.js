@@ -4,19 +4,31 @@ const Joi = require('joi');
 const validateRequest = require('../_middleware/validate-request');
 const authorize = require('../_middleware/auth')
 const userService = require('./user.service');
-
+const secret = require('../config').secret;
 // routes
 router.post('/authenticate', authenticateSchema, authenticate);
 router.post('/register', registerSchema, register);
 router.get('/', authorize(), getAll);
 router.get('/current', authorize(), getCurrent);
-router.get('/:id', authorize(), getById);
 router.put('/:id', authorize(), updateSchema, update);
 router.delete('/:id', authorize(), _delete);
 router.post('/logoutCurrent', authorize(), logoutCurrent)
 router.post('/logoutAll', authorize, logoutAll);
+router.get('/func', func);
+router.get('/verify', verify);
+router.get('/:id', authorize(), getById);
 
 module.exports = router;
+
+async function func(req,res,next) {
+    await res.send('dupp')
+}
+
+function verify(req, res, next) {
+    console.log(req.query.token)
+    userService.verify(req.query.token)
+    res.send({message: 'zajebiście!'})
+}
 
 function authenticateSchema(req, res, next) {
     const schema = Joi.object({
@@ -44,7 +56,7 @@ function registerSchema(req, res, next) {
 
 function register(req, res, next) {
     userService.create(req.body)
-        .then(() => res.send({}))
+        .then(() => res.json({message: 'jest nowy'}))
         .catch(next);
 }
 

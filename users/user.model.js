@@ -4,7 +4,8 @@ module.exports = model;
 
 function model(sequelize) {
     const attributes = {
-        userID: {type: DataTypes.INTEGER, primaryKey: true, allowNull: true, autoIncrement: true},
+        userID: { type: DataTypes.INTEGER, primaryKey: true, allowNull: true, autoIncrement: true},
+        validated: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false},
         name: { type: DataTypes.STRING, allowNull: true },
         passwordHash: { type: DataTypes.STRING, allowNull: true },
         email: { type: DataTypes.STRING, allowNull: true},
