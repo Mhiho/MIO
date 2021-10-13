@@ -1,4 +1,5 @@
 const secret = require('../config').secret;
+const tempSecret = require('../config').tempSecret;
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const db = require('../_helpers/db');
@@ -60,8 +61,7 @@ async function startResetPassword(email) {
     }
 
 async function checkResetMail(mailToken) {
-    console.log(mailToken)
-    const decoded = jwt.verify(mailToken, secret)
+    const decoded = jwt.verify(mailToken, tempSecret)
     const user = await db.User.scope('withHash').findOne({ where: {userID: decoded.id}}).catch(e => console.log(e));
     if(!user) {
         return 'no user'
@@ -80,8 +80,9 @@ async function resetPwd(password, token) {
         return 'there is no such token';
     }
     const reseted = await bcrypt.hash(password, 10);
-    const decoded = await jwt.verify(isToken.token, secret);
+    const decoded = await jwt.verify(isToken.token, tempSecret);
     await db.User.update({ passwordHash: reseted },{where: { userID: decoded.id }}).catch(e=> console.log(e));
+    await db.Token.destroy({ where: { token }}).catch(e=> console.log(e));;
     return 'password changed'
 }
 
