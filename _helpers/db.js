@@ -24,6 +24,7 @@ const initialize = async () => {
 
     // init models and add them to the exported db object
     db.User = require('../users/user.model')(sequelize);
+    db.Token = require('../tokens/token.model')(sequelize);
     db.ArmyHern = require('../game.models/hern-army.model')(sequelize);
     db.ArmyIbis = require('../game.models/ibis-army.model')(sequelize);
     db.ArmyWild = require('../game.models/wild-army.model')(sequelize);
@@ -34,6 +35,9 @@ const initialize = async () => {
     db.CastleIbis = require('../game.models/ibis-castle.model')(sequelize);
     db.CastleWild = require('../game.models/wild-castle.model')(sequelize);
     db.MapTile = require('../game.models/map-tile.model')(sequelize);
+    
+    //add dependencies between models
+    db.Token.belongsTo(db.User, {foreignKey: 'userID', as: 'UserID'});
     // sync all models with database
     await sequelize.sync();
     await connection.query(lorisArmy);

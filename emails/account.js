@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const { myMail, secret, server } = require('../config');
-
+const db = require('../_helpers/db');
 
 const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -15,32 +15,30 @@ const transporter = nodemailer.createTransport({
 
 const sendVerificationMail = async (email, name) => {
     const user = await db.User.scope('withHash').findOne({ where:{email}})
-    const token = jwt.sign({ id: user.userID }, secret, { expiresIn: '1d' });
-    console.log(token)
-    console.log(jwt.verify(token, secret))
+    const token = jwt.sign({ id: user.userID, valid: user.validated }, secret, { expiresIn: '1d' });
     await transporter.sendMail({
         from: '"Administrator" m.pelka7@gmail.com',
         to: email,
         subject: 'Zweryfikuj swoje konto',
         //UWAGA
-        html: `<div><h1>Cześć ${name},</h1> <h3>zweryfikuj swoje konto:</h3> </br> <button style="background: lightgreen; height: 50px; width: 90px; border-radius: 5px"><a style="color: white; text-decoration: none" href="${server}users/verify?token=${token}">Zweryfikuj</a></button>\n <h3>Jeśli nie wysłałeś prośby o zmianę hasła, skontaktuj się z nami jak najszybciej.\n Pozdrawiamy! \n Obsługa</h3></div>`
+        html: `<div><h1>Cześć ${name},</h1> <hr></hr> </br> <h3>Zweryfikuj swoje konto:</h3> </br> <button style="background: #2e2b22; color: #eee; height: 50px; width: 90px; border-radius: 5px"><a style="color: white; text-decoration: none; font-weight: bold" href="${server}users/verify?token=${token}">Zweryfikuj</a></button>\n <hr></hr> </br> <h3 style="color:darkgrey">Jeśli nie wysłałeś prośby o zmianę hasła, skontaktuj się z nami jak najszybciej.</h3>\n <h2> Pozdrawiamy! \n Obsługa</h2></div>`
         // 
-    })
+    }).catch(e=> console.log(e))
 }
 
 const sendResetPwd = async (email) => {
-    const user = await db.User.findOne({"email": email})
+    const user = await db.User.scope('withHash').findOne({ where: { email }}).catch(e => console.log(e))
     const name = user.name
-    const token = jwt.sign({ id: user.userID + Date.now() }, secret, { expiresIn: '1d' });
-
+    const token = jwt.sign({ id: user.userID }, secret, { expiresIn: '1h' });
+    await db.Token.create({token, userID: user.userID});
     await transporter.sendMail({
         from: '"Administrator" m.pelka7@gmail.com',
         to: email,
         subject: 'Zresetuj hasło',
         //UWAGA
-        html: `<div><h1>Cześć ${name},</h1> <h3>zresetuj swoje hasło:</h3> </br> <button style="background: lightgreen; height: 50px; width: 90px; border-radius: 5px"><a href="${server}?token=${token}">Reset</a></button> \n <h3>Jeśli nie wysłałeś prośby o zmianę hasła, skontaktuj się z nami jak najszybciej.\n Pozdrawiamy! \n Obsługa</div>`
+        html: `<div><h1>Cześć ${name},</h1> <hr></hr> </br> <h3>Zresetuj swoje hasło:</h3> </br> <button style="background: #2e2b22; color: #eee; height: 50px; width: 90px; border-radius: 5px"><a style="color: white; text-decoration: none; font-weight: bold" href="${server}users/checkResetMail?token=${token}">Reset</a></button> \n  <hr></hr> </br>  <h3 style="color:darkgrey">Jeśli nie wysłałeś prośby o zmianę hasła, skontaktuj się z nami jak najszybciej.\n <h2> Pozdrawiamy! \n Obsługa</h2></div>`
         // 
-    })
+    }).catch(e=> console.log(e))
 }
 
 module.exports = {

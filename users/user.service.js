@@ -12,27 +12,77 @@ module.exports = {
     update,
     delete: _delete,
     verify,
+    startResetPassword,
+    checkResetMail,
+    resetPwd,
 };
 
-async function authenticate({ email, password }) {
-    const user = await db.User.scope('withHash').findOne({ where: { email } });
-    if (!user || !(await bcrypt.compare(password, user.passwordHash))){
-        throw 'Email or password is incorrect';
+async function authenticate(body) {
+    const user = await db.User.scope('withHash').findOne({ where: { email: body.email } }).catch(e=>console.log(e));
+    if (!user || !(await bcrypt.compare(body.password, user.passwordHash))){
+        return 'Email or password is incorrect';
     }
-    // authentication successful
+    if (user.validated !== true) {
+        return 'You must activate your account'
+    }
     const token = jwt.sign({ sub: user.userID }, secret, { expiresIn: '30d' });
-    console.log(token)
-    const tokens = user.tokens;
-    tokens.push({token});
-    await db.User.update({tokens},{where: {userID: user.userID}}).then((updatedUser)=>{ updatedUser.tokens });
+    user.tokens.push({token});
+    await db.User.update({tokens: user.tokens},{where: {userID: user.userID}}).catch(e=> console.log(e));
     const response = { ...omitHash(user.get()) };
     return {response, token};
 }
 
 async function verify(token) {
     const decoded = jwt.verify(token, secret)
+    const user = await db.User.scope('withHash').findOne({ where: {userID: decoded.id}}).catch(e => console.log(e))
+    const tokenTrue = jwt.sign({ id: user.userID, valid: user.validated }, secret, { expiresIn: '1d' });
+    const decodedTrue = jwt.verify(tokenTrue, secret)
+    if(decodedTrue.valid === true) {
+        return '0'
+    }
         //update usera, jeśli nie to za 24h usunac go
-    await db.User.update({validated: true}, { where: { userID: decoded.id }}).catch(e=> console.log(e));
+    if(user.validated === true) {
+        return '1';
+    }
+    if(user.validated === false) {
+        await db.User.update({validated: true}, { where: { userID: decoded.id, }}).catch(e=> console.log(e));
+        return '2';
+    }
+}
+
+async function startResetPassword(email) {
+    const user = await db.User.scope('withHash').findOne({ where: { email }}).catch(e => console.log(e));
+    if(user === null) {
+        return null;
+    }
+    await sendResetPwd(email).catch(e => console.log(e));
+    return 'done';
+    }
+
+async function checkResetMail(mailToken) {
+    console.log(mailToken)
+    const decoded = jwt.verify(mailToken, secret)
+    const user = await db.User.scope('withHash').findOne({ where: {userID: decoded.id}}).catch(e => console.log(e));
+    if(!user) {
+        return 'no user'
+    }
+    const token = await db.Token.findOne({ where: { token: mailToken, userID: decoded.id }}).catch(e => console.log(e))    
+    if(token) {
+        return token
+    } else {
+        return 'mail not ok'
+    }
+}
+
+async function resetPwd(password, token) {
+    const isToken = await db.Token.findOne({ where: { token }}).catch(e => console.log(e))
+    if(!isToken) {
+        return 'there is no such token';
+    }
+    const reseted = await bcrypt.hash(password, 10);
+    const decoded = await jwt.verify(isToken.token, secret);
+    await db.User.update({ passwordHash: reseted },{where: { userID: decoded.id }}).catch(e=> console.log(e));
+    return 'password changed'
 }
 
 async function getAll() {
