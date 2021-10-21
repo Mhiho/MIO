@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const db = require('../_helpers/db');
 const { sendVerificationMail, sendResetPwd } = require('../emails/account');
+const multer = require('multer');
 
 module.exports = {
     authenticate,
@@ -16,7 +17,14 @@ module.exports = {
     startResetPassword,
     checkResetMail,
     resetPwd,
+    addAvatar,
 };
+
+const uploadAvatars = multer({ dest: 'uploads/avatars/' });
+
+async function addAvatar(file) {
+    await uploadAvatars.single('avatar');
+}
 
 async function authenticate(body) {
     const user = await db.User.scope('withHash').findOne({ where: { email: body.email } }).catch(e=>console.log(e));

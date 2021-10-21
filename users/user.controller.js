@@ -1,4 +1,5 @@
 const express = require('express');
+const app = express();
 const router = express.Router();
 const Joi = require('joi');
 const validateRequest = require('../_middleware/validate-request');
@@ -6,6 +7,14 @@ const authorize = require('../_middleware/auth')
 const userService = require('./user.service');
 const { page } = require('../config');
 const jwt = require('jsonwebtoken')
+
+const multer = require('multer')
+const sharp = require('sharp')
+const storage = require('../public/config')
+const upload = multer(storage)
+const path = require('path')
+const fs = require('fs');
+
 // routes
 router.post('/authenticate', authenticateSchema, authenticate);
 router.post('/register', registerSchema, register);
@@ -14,14 +23,41 @@ router.get('/current', authorize(), getCurrent);
 router.put('/:id', authorize(), updateSchema, update);
 router.delete('/:id', authorize(), _delete);
 router.post('/logoutCurrent', authorize(), logoutCurrent)
-router.post('/logoutAll', authorize, logoutAll);
+router.post('/logoutAll', authorize(), logoutAll);
 router.get('/verify', verify);
-router.post('/sendEmailToResetPassword', startResetPassword)
-router.post('/resetPassword/:token', changePasswordSchema, resetPwd)
-router.get('/checkResetMail', checkResetMail)
+router.post('/sendEmailToResetPassword', startResetPassword);
+router.post('/resetPassword/:token', changePasswordSchema, resetPwd);
+router.get('/checkResetMail', checkResetMail);
+// router.post('/addAvatar', authorize(), addAvatar);
 // router.get('/:id', authorize(), getById);
+router.get('/avatar/:name', authorize(), getAvatar)
 
 module.exports = router;
+
+async function getAvatar(req, res, next) {
+    if(req.params.name) {
+        res.send('avatars' + `/${req.params.name}/avatar.jpeg`)
+    }else {
+        res.send('Nok')
+    }
+}
+
+router.post('/addAvatar', upload.single('avatar'), async (req, res, next) => {
+    console.log(req.file)
+        
+        const pathToFile = `${req.file.destination}/`;
+        const dir = `${pathToFile}${req.body.name}`;
+        if(!fs.existsSync(dir)) {
+            fs.mkdirSync(dir);
+        }
+        await sharp(req.file.path)
+         .resize(300)
+         .jpeg({quality: 50})
+         .toFile(path.resolve(`${dir}/avatar.jpeg`)).catch(e => console.log(e))
+        fs.unlinkSync(req.file.path)
+        await db.User.update({avatar: `avatars/${req.body.name}/avatar.jpeg`}, {where: { name: req.body.name }}).catch(e => console.log(e))
+        res.send('SUCCESS!')
+})
 
 async function verify(req, res, next) {
     const response = await userService.verify(req.query.token).catch(e=> {

@@ -4,7 +4,8 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const port = process.env.PORT || 4000;
 const errorHandler = require('./_middleware/error-handler');
-const cors = require('cors')
+const cors = require('cors');
+const path = require('path');
 
 let allowCrossDomain = function(req, res, next) {
   res.header('Access-Control-Allow-Origin', "*");
@@ -37,6 +38,9 @@ app.use(express.json());
 
 app.use('/users', require('./users/user.controller'));
 app.use('/map', require('./map/map.controller'));
+
+console.log(__dirname)
+app.use(express.static(__dirname + '/public'))
 app.use(errorHandler);
 
 
