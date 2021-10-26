@@ -36,27 +36,42 @@ module.exports = router;
 
 async function getAvatar(req, res, next) {
     if(req.params.name) {
-        res.send('avatars' + `/${req.params.name}/avatar.jpeg`)
+        const user = await userService.getPath(req.params.name).catch( e => console.log(e));
+        await res.send(user.avatar)
     }else {
         res.send('Nok')
     }
 }
 
 router.post('/addAvatar', upload.single('avatar'), async (req, res, next) => {
-    console.log(req.file)
-        
-        const pathToFile = `${req.file.destination}/`;
-        const dir = `${pathToFile}${req.body.name}`;
-        if(!fs.existsSync(dir)) {
-            fs.mkdirSync(dir);
-        }
+        const pathToFile = `${req.file.destination}`;
+        const dir = `${pathToFile}/${req.body.name}/`;
+        //delete from avatars/ ??
+        console.log(pathToFile)
+        console.log(dir)
+        if (!fs.existsSync(dir)){
+            fs.mkdirSync(dir, { recursive: true });
+        }else {
+
+                fs.readdir(dir, (err, files) => {
+                    if (err) {
+                        throw err
+                    }
+                    for (const file of files) {
+                        fs.unlink(path.join(dir, file), err => {
+                            if (err) throw err
+                        })
+                    }
+                })
+            }
         await sharp(req.file.path)
          .resize(300)
          .jpeg({quality: 50})
-         .toFile(path.resolve(`${dir}/avatar.jpeg`)).catch(e => console.log(e))
-        fs.unlinkSync(req.file.path)
-        await db.User.update({avatar: `avatars/${req.body.name}/avatar.jpeg`}, {where: { name: req.body.name }}).catch(e => console.log(e))
-        res.send('SUCCESS!')
+         .toFile(path.resolve(`${dir}${req.body.time}.jpeg`)).catch(e => console.log(e))
+         fs.unlinkSync(req.file.path)
+        await db.User.update({avatar: `avatars/${req.body.name}/${req.body.time}.jpeg`}, {where: { name: req.body.name }}).catch(e => console.log(e))
+        const user = await db.User.scope('defaultScope').findOne({ where: { name: req.body.name }}).catch(e => console.log(e));    
+        res.send(user.avatar)
 })
 
 async function verify(req, res, next) {

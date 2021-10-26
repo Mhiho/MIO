@@ -18,7 +18,12 @@ module.exports = {
     checkResetMail,
     resetPwd,
     addAvatar,
+    getPath,
 };
+
+async function getPath(name) {
+    return await db.User.scope('withHash').findOne({ where: { name }}).catch(e => console.log(e))
+}
 
 const uploadAvatars = multer({ dest: 'uploads/avatars/' });
 
