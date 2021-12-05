@@ -6,14 +6,15 @@ const validateRequest = require('../_middleware/validate-request');
 const authorize = require('../_middleware/auth')
 const userService = require('./user.service');
 const { page } = require('../config');
-const jwt = require('jsonwebtoken')
-
-const multer = require('multer')
-const sharp = require('sharp')
-const storage = require('../public/config')
-const upload = multer(storage)
-const path = require('path')
+const jwt = require('jsonwebtoken');
+const multer = require('multer');
+const sharp = require('sharp');
+const { storage } = require('../config');
+const upload = multer(storage);
+const path = require('path');
 const fs = require('fs');
+const { initVillage } = require('../newUser/init-village');
+
 
 // routes
 router.post('/authenticate', authenticateSchema, authenticate);
@@ -151,6 +152,7 @@ function registerSchema(req, res, next) {
         race: Joi.string().valid('0', '1', '2').required(),
     });
     validateRequest(req, next, schema);
+    initVillage(req.body.race)
 }
 
 function register(req, res, next) {

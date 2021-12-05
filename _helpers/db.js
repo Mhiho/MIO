@@ -4,6 +4,7 @@ const { Sequelize } = require('sequelize');
 const lorisArmy = require('../initialData/lorisArmy');
 const ibisArmy = require('../initialData/ibisArmy');
 const wildArmy = require('../initialData/wildArmy');
+const { generateMap } = require('../utils/generate-map');
 
 module.exports = db = {};
 
@@ -18,10 +19,9 @@ const initialize = async () => {
       });
     await connection.query(`CREATE DATABASE IF NOT EXISTS \`${config.database}\`;`);
     await connection.query(`SET GLOBAL sql_mode = '';`);
-
     // connect to db
     const sequelize = new Sequelize(config.database, config.user, config.password, { dialect: 'mysql' });
-
+    
     // init models and add them to the exported db object
     db.User = require('../users/user.model')(sequelize);
     db.Token = require('../tokens/token.model')(sequelize);
@@ -43,6 +43,10 @@ const initialize = async () => {
     await connection.query(lorisArmy);
     await connection.query(ibisArmy);
     await connection.query(wildArmy);
+    const d = await db.MapTile.findAll();
+    if(d.length !== 900) {
+      await generateMap().catch(console.error);
+    }
 }; 
 
 

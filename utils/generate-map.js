@@ -1,8 +1,9 @@
 const config = require('../config').config;
 const mysql = require('mysql2/promise');
 
-const dragonGen = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,2,2,3]
+
 const generateMap = async () => {
+    const dragonGen = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,2,2,3]
     const connection = await mysql.createConnection({
         host: config.host,
         user: config.user,
@@ -45,5 +46,7 @@ const generateMap = async () => {
         }
     }
     console.log('ressources update done')
+    console.log('map ready')
 }
-generateMap().catch(console.error);
+
+module.exports = { generateMap }
