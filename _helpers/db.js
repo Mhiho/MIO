@@ -8,7 +8,8 @@ const { generateMap } = require('../utils/generate-map');
 
 module.exports = db = {};
 
-
+const setXY = 60;
+const setDLength = setXY * setXY
 const initialize = async () => {
     // create db if it doesn't already exist
     const connection = await mysql.createConnection({
@@ -38,7 +39,7 @@ const initialize = async () => {
     await connection.query(ibisArmy);
     await connection.query(wildArmy);
     const d = await db.MapTile.findAll();
-    if(d.length !== 900) {
+    if(d.length !== setDLength) {
       await generateMap().catch(console.error);
     }
 }; 

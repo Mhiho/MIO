@@ -38,8 +38,6 @@ app.use(express.json());
 
 app.use('/users', require('./users/user.controller'));
 app.use('/map', require('./map/map.controller'));
-
-console.log(__dirname)
 app.use(express.static(__dirname + '/public'))
 app.use(errorHandler);
 

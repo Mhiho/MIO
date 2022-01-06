@@ -21,7 +21,7 @@ const sendVerificationMail = async (email, name) => {
         to: email,
         subject: 'Zweryfikuj swoje konto',
         //UWAGA
-        html: `<div><h1>Cześć ${name},</h1> <hr></hr> </br> <h3>Zweryfikuj swoje konto:</h3> </br> <button style="background: #2e2b22; color: #eee; height: 50px; width: 90px; border-radius: 5px"><a style="color: white; text-decoration: none; font-weight: bold" href="${server}users/verify?token=${token}">Zweryfikuj</a></button>\n <hr></hr> </br> <h3 style="color:darkgrey">Jeśli nie wysłałeś prośby o zmianę hasła, skontaktuj się z nami jak najszybciej.</h3>\n <h2> Pozdrawiamy! \n Obsługa</h2></div>`
+        html: `<div><h1>Cześć ${name},</h1> <hr></hr> </br> <h3>Zweryfikuj swoje konto:</h3> </br> <button style="background: #2e2b22; color: #eee; height: 50px; width: 90px; border-radius: 5px"><a style="color: white; text-decoration: none; font-weight: bold" href="${server}users/verify?token=${token}&code=${user.race}">Zweryfikuj</a></button>\n <hr></hr> </br> <h3 style="color:darkgrey">Jeśli nie wysłałeś prośby o zmianę hasła, skontaktuj się z nami jak najszybciej.</h3>\n <h2> Pozdrawiamy! \n Obsługa</h2></div>`
         // 
     }).catch(e=> console.log(e))
 }

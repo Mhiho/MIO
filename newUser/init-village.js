@@ -11,9 +11,40 @@ const initVillage = async (race) => {
     });
     const fetch = await connection.query(`SELECT * FROM MapTiles WHERE terrainType = 7 AND available = true ORDER BY RAND()LIMIT 1;`)
     const settlement = fetch[0][0];
-    console.log(settlement)
     switch (race) {
         case '0':
+            await connection.query(`UPDATE MapTiles
+            SET foodStart = 100, 
+                woodStart = 100, 
+                stoneStart = 50, 
+                ironStart = 20,
+                silverStart = 10, 
+                magicStart = 0, 
+                hunters = '{"hunters": [0,0,0]}', 
+                fields = '{"fields": [0,0]}', 
+                forest = '{"forest": [0,0,0]}', 
+                stoneMine = '{}',
+                ironMine = '{}', 
+                silverMine = '{}'
+             WHERE tileID = ${settlement.tileID}`);
+            break;
+        case '1':
+            await connection.query(`UPDATE MapTiles
+            SET foodStart = 100, 
+                woodStart = 100, 
+                stoneStart = 50, 
+                ironStart = 20,
+                silverStart = 10, 
+                magicStart = 0, 
+                hunters = '{"hunters": [0]}', 
+                fields = '{"fields": [0,0,0,0]}', 
+                forest = '{"forest": [0]}', 
+                stoneMine = '{"stoneMine": [0]}',
+                ironMine = '{}', 
+                silverMine = '{}'
+             WHERE tileID = ${settlement.tileID}`);
+            break;
+        case '2':
             await connection.query(`UPDATE MapTiles
             SET foodStart = 100, 
                 woodStart = 100, 
@@ -28,12 +59,6 @@ const initVillage = async (race) => {
                 ironMine = '{}', 
                 silverMine = '{}'
              WHERE tileID = ${settlement.tileID}`);
-            break;
-        case '1':
-            await connection.query(`INSERT INTO  () VALUES ()`);
-            break;
-        case '2':
-            await connection.query(`INSERT INTO  () VALUES ()`);
             break;
         default: 
             console.log('error with race parameter')
