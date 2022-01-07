@@ -11,5 +11,5 @@ const ibisArmy = "INSERT IGNORE INTO ArmyIbis(" +
     "(8,'ramMan',3,35,10,25,25,10,0,55,25)," +
     "(9,'spy',20,0,20,5,5,2,15,25,25)," +
     "(10,'palladin',30,3,35,25,20,4,50,35,35)," +
-    "(11,'bigEagle',155,10,145,30,30,6,0,190,220);"
+    "(11,'perunSon',155,10,145,30,30,6,0,190,220);"
 module.exports = ibisArmy;

@@ -5,7 +5,8 @@ module.exports = model;
 function model(sequelize) {
     const attributes = {
         tileID: {type: DataTypes.INTEGER, primaryKey: true, allowNull: false, autoIncrement: true},  
-        name: { type: DataTypes.STRING, allowNull: true},
+        race: {type: DataTypes.ENUM('0','1','2'), allowNull: true, defaultValue: null},
+        name: { type: DataTypes.STRING, allowNull: true, defaultValue: 'ziemia niczyja'},
         positionX: {type: DataTypes.INTEGER, allowNull: true},
         positionY: {type: DataTypes.INTEGER, allowNull: true},
         available: {type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true},
@@ -84,7 +85,7 @@ function model(sequelize) {
         blackGuard: {type: DataTypes.INTEGER, allowNull: true},
         gigantWild: {type: DataTypes.INTEGER, allowNull: true},
         warRhino: {type: DataTypes.INTEGER, allowNull: true},
-        dragon: {type: DataTypes.INTEGER, allowNull: true},
+        trainedDragon: {type: DataTypes.INTEGER, allowNull: true},
         ramWild: {type: DataTypes.INTEGER, allowNull: true},
         shaman: {type: DataTypes.INTEGER, allowNull: true},
         blindGuild: {type: DataTypes.INTEGER, allowNull: true},
@@ -105,6 +106,7 @@ function model(sequelize) {
         rhinoRate: {type: DataTypes.DECIMAL, allowNull: true},
         lionRate: {type: DataTypes.DECIMAL, allowNull: true},
         dragonRate: {type: DataTypes.DECIMAL, allowNull: true},
+        ancientArtifact: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false}
     };
     return sequelize.define('MapTile', attributes);
 }

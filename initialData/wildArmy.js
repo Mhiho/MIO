@@ -11,5 +11,5 @@ const wildArmy = "INSERT IGNORE INTO ArmyWilds(" +
     "(8,'wildGigant',38,40,30,20,25,6,60,48,40)," +
     "(9,'warRihno',60,15,30,25,30,6,60,55,38)," +
     "(10,'blindEye',5,0,5,4,3,2,15,25,10)," +
-    "(11,'dragon',200,60,175,30,20,10,0,200,250);"
+    "(11,'trainedDragon',200,60,175,30,20,10,0,200,250);"
 module.exports = wildArmy;

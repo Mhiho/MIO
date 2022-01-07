@@ -11,5 +11,5 @@ const lorisArmy = "INSERT IGNORE INTO ArmyHerns(" +
     "(8,'balistaHern',45,15,10,25,5,4,0,40,30)," +
     "(9,'slave',2,0,2,1,1,0,5,20,1)," +
     "(10,'scoutHern',10,0,10,5,5,2,20,25,10)," +
-    "(11,'walkiria',150,10,135,50,50,0,0,200,250);"
+    "(11,'mokoszDaughter',150,10,135,50,50,0,0,200,250);"
 module.exports = lorisArmy;
