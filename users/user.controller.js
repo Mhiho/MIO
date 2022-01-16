@@ -222,7 +222,6 @@ function update(req, res, next) {
 
 async function logoutCurrent(req, res, next) {
   try {
-    console.log(req.user);
     req.user.tokens = req.user.tokens.filter((token) => {
       return token.token !== req.token;
     });
