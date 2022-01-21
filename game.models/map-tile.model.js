@@ -106,6 +106,7 @@ function model(sequelize) {
         rhinoRate: {type: DataTypes.DECIMAL, allowNull: true},
         lionRate: {type: DataTypes.DECIMAL, allowNull: true},
         dragonRate: {type: DataTypes.DECIMAL, allowNull: true},
+        startGather: {type: DataTypes.STRING, allowNull: true},
         ancientArtifact: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false}
     };
     return sequelize.define('MapTile', attributes);

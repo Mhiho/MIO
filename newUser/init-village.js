@@ -20,12 +20,12 @@ const initVillage = async (race, userID) => {
                 ironStart = 20,
                 silverStart = 10, 
                 magicStart = 0, 
-                hunters = '{"hunters": [0,0,0]}', 
-                fields = '{"fields": [0,0]}', 
-                forest = '{"forest": [0,0,0]}', 
-                stoneMine = '{}',
-                ironMine = '{}', 
-                silverMine = '{}'
+                hunters = '[0,0,0]', 
+                fields = '[0,0]', 
+                forest = '[0,0,0]', 
+                stoneMine = '[]',
+                ironMine = '[]', 
+                silverMine = '[]'
              WHERE tileID = ${settlement.tileID}`);
             break;
         case '1':
@@ -36,12 +36,12 @@ const initVillage = async (race, userID) => {
                 ironStart = 20,
                 silverStart = 10, 
                 magicStart = 0, 
-                hunters = '{"hunters": [0]}', 
-                fields = '{"fields": [0,0,0,0]}', 
-                forest = '{"forest": [0]}', 
-                stoneMine = '{"stoneMine": [0]}',
-                ironMine = '{}', 
-                silverMine = '{}'
+                hunters = '[0]', 
+                fields = '[0,0,0,0]', 
+                forest = '[0]', 
+                stoneMine = '[0]',
+                ironMine = '[]', 
+                silverMine = '[]'
              WHERE tileID = ${settlement.tileID}`);
             break;
         case '2':
@@ -52,18 +52,18 @@ const initVillage = async (race, userID) => {
                 ironStart = 20,
                 silverStart = 10, 
                 magicStart = 0, 
-                hunters = '{"hunters": [0,0,0,0]}', 
-                fields = '{"fields": [0]}', 
-                forest = '{"forest": [0,0,0,0]}', 
-                stoneMine = '{}',
-                ironMine = '{}', 
-                silverMine = '{}'
+                hunters = '[0,0,0,0]', 
+                fields = '[0]', 
+                forest = '[0,0,0,0]', 
+                stoneMine = '[]',
+                ironMine = '[]', 
+                silverMine = '[]'
              WHERE tileID = ${settlement.tileID}`);
             break;
         default: 
             console.log('error with race parameter')
     }
-    await db.MapTile.update({available: false},{where: {tileID: settlement.tileID}}).catch(e=> console.log(e));
+    await db.MapTile.update({available: false, startGather: Date.now()},{where: {tileID: settlement.tileID}}).catch(e=> console.log(e));
     await db.User.update({ownVillagesArray: [settlement.tileID], capitalPositionX: settlement.positionX, capitalPositionY: settlement.positionY, gameStartTime: Date.now()}, {where: {userID: userID }}).catch(e => console.log(e))
 }
 

@@ -30,7 +30,7 @@ function model(sequelize) {
         capitalPositionY: { type: DataTypes.INTEGER, allowNull: true },
         gameDragonCrystals: { type: DataTypes.INTEGER, allowNull: true },
         avatar: { type: DataTypes.STRING, allowNull: true },
-        gameStartTime: {type: DataTypes.STRING, allowNull: false, defaultValue: '123'}
+        gameStartTime: {type: DataTypes.STRING, allowNull: true}
     };
 //capitalPosition default sa tymczasowe
     const options = {
