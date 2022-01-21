@@ -26,11 +26,11 @@ function model(sequelize) {
         otherPositions: { type: DataTypes.JSON, allowNull: true},
         whisperingTitle: { type: DataTypes.STRING, allowNull: true },
         tokens: { type: DataTypes.JSON, allowNull: true, defaultValue: [] },
-        capitalPositionX: { type: DataTypes.INTEGER, allowNull: true, defaultValue: 10 },
-        capitalPositionY: { type: DataTypes.INTEGER, allowNull: true, defaultValue: 10 },
+        capitalPositionX: { type: DataTypes.INTEGER, allowNull: true },
+        capitalPositionY: { type: DataTypes.INTEGER, allowNull: true },
         gameDragonCrystals: { type: DataTypes.INTEGER, allowNull: true },
         avatar: { type: DataTypes.STRING, allowNull: true },
-        
+        gameStartTime: {type: DataTypes.STRING, allowNull: false, defaultValue: '123'}
     };
 //capitalPosition default sa tymczasowe
     const options = {

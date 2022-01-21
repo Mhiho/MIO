@@ -49,6 +49,7 @@ async function authenticate(body) {
 async function verify(token) {
     const decoded = jwt.verify(token, secret)
     const user = await db.User.scope('withHash').findOne({ where: {userID: decoded.id}}).catch(e => console.log(e))
+
     const tokenTrue = jwt.sign({ id: user.userID, valid: user.validated }, secret, { expiresIn: '1d' });
     const decodedTrue = jwt.verify(tokenTrue, secret)
     if(decodedTrue.valid === true) {
@@ -60,7 +61,7 @@ async function verify(token) {
     }
     if(user.validated === false) {
         await db.User.update({validated: true}, { where: { userID: decoded.id, }}).catch(e=> console.log(e));
-        return '2';
+        return {return: '2', userID: user.userID};
     }
 }
 

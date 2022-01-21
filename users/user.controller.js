@@ -98,14 +98,19 @@ async function verify(req, res, next) {
     }
     console.log(e);
   });
-  if (response === "0") {
+  if (response === '0') {
     res.redirect(`${page}tokenUsed`);
   }
-  if (response === "1") {
+  if (response === '1') {
     res.redirect(`${page}userExist`);
   }
-  await initVillage(req.query.code);
-  await res.redirect(`${page}login`);
+  // if (response === '3') {
+  //   console.log('dupa')
+  // }
+  if (response.return === '2') {
+    await initVillage(req.query.code, response.userID);
+    await res.redirect(`${page}login`);
+  }
 }
 
 async function startResetPassword(req, res, next) {

@@ -2,7 +2,7 @@ const config = require('../config').config;
 const mysql = require('mysql2/promise');
 const db = require('../_helpers/db');
 
-const initVillage = async (race) => {
+const initVillage = async (race, userID) => {
     const connection = await mysql.createConnection({
         host: config.host,
         user: config.user,
@@ -64,7 +64,7 @@ const initVillage = async (race) => {
             console.log('error with race parameter')
     }
     await db.MapTile.update({available: false},{where: {tileID: settlement.tileID}}).catch(e=> console.log(e));
-
+    await db.User.update({ownVillagesArray: [settlement.tileID], capitalPositionX: settlement.positionX, capitalPositionY: settlement.positionY, gameStartTime: Date.now()}, {where: {userID: userID }}).catch(e => console.log(e))
 }
 
 module.exports = { initVillage };
