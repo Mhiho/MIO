@@ -59,8 +59,9 @@ async function verify(token) {
     if(user.validated === true) {
         return '1';
     }
+    // const defaultAvatarPath = 
     if(user.validated === false) {
-        await db.User.update({validated: true}, { where: { userID: decoded.id, }}).catch(e=> console.log(e));
+        await db.User.update({validated: true, avatar: 'avatars/fighter.jpg'}, { where: { userID: decoded.id, }}).catch(e=> console.log(e));
         return {return: '2', userID: user.userID};
     }
 }

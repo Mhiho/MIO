@@ -9,6 +9,7 @@ router.get('/wholemap', authorize(), wholeMap);
 router.get('/tileMap/:tileID', authorize(), tileMap);
 router.get('/tileMapXY/:findX/:findY', authorize(), tileMapXY);
 router.get('/capitalView/:capitalPositionX/:capitalPositionY', authorize(), capitalView);
+
 module.exports = router;
 function centerMapTile(req, res, next) {
     mapService.ownCenterMap(req.query.name).then(data => res.json(data)).catch(next);
