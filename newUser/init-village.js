@@ -11,10 +11,10 @@ const initVillage = async (race, userID) => {
     });
     const fetch = await connection.query(`SELECT * FROM MapTiles WHERE terrainType = 7 AND available = true ORDER BY RAND()LIMIT 1;`)
     const settlement = fetch[0][0];
-    const initArr = [{"0":0},{"1":0},{"2":0},{"3":0},{"4":0},{"5":0},{"6":0},{"7":0},{"8":0},{"9":0},{"10":0},{"11":0},{"12":0},{"13":0},{"14":0},{"15":0},{"16":0},{"17":0}]
-    const villageSlots = JSON.stringify(initArr.concat({"forest": 0},{"fields": 0},{"forest":0},{"stone":0},{"fields":0},{"forest":0},{"25":0}))
-    const villageSlotsIbis = JSON.stringify(initArr.concat({"fields": 0},{"fields": 0},{"forest":0},{"stone":0},{"fields":0},{"fields":0},{"25":0}))
-    const villageSlotsWild = JSON.stringify(initArr.concat({"forest": 0},{"forest": 0},{"forest":0},{"stone":0},{"forest":0},{"forest":0},{"25":0}))
+    const initArr = [{"0":0},{"1":0},{"2":0},{"3":0},{"4":0},{"5":0},{"6":0},{"7":0},{"8":0},{"9":0},{"10":0},{"11":0},{"12":0},{"13":0},{"14":0},{"15":0}]
+    const villageSlots = JSON.stringify(initArr.concat({"forest": 0},{"fields": 0},{"forest":0},{"stone":0},{"fields":0},{"forest":0},{"23":0},{"24":0},{"25":0}))
+    const villageSlotsIbis = JSON.stringify(initArr.concat({"fields": 0},{"fields": 0},{"forest":0},{"stone":0},{"fields":0},{"fields":0},{"23":0},{"24":0},{"25":0}))
+    const villageSlotsWild = JSON.stringify(initArr.concat({"forest": 0},{"forest": 0},{"forest":0},{"stone":0},{"forest":0},{"forest":0},{"23":0},{"24":0},{"25":0}))
     console.log(villageSlots)
     switch (race) {
         case '0':
