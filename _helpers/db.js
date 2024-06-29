@@ -1,4 +1,4 @@
-const config = require('../config').config;
+const config = require('../config');
 const mysql = require('mysql2/promise');
 const { Sequelize } = require('sequelize');
 const lorisArmy = require('../initialData/lorisArmy');
@@ -50,7 +50,7 @@ const initialize = async () => {
 
     const d = await db.MapTile.findAll();
     if(d.length !== setDLength) {
-      await generateMap().catch(console.error);
+      // await generateMap().catch(console.error);
     }
 }; 
 
